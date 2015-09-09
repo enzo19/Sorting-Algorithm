@@ -12,14 +12,24 @@ int quickSort(int s,int n)
 
 void merge(int* A, int* B, int l, int m, int r)
 {
-int i, j;
-for (i = m + 1; i > l; i--) B[i - 1] = A[i - 1];
-    for (j = m; j < r; j++) B[r + m - j] = A[j + 1];
-        for (int k = l; k <= r; k++)
-            if (B[j] < B[i])
-                A[k] = B[j--];
-            else
-                A[k] = B[i++];
+    int i, j;
+    for (i = m + 1; i > l; i--) B[i - 1] = A[i - 1];
+    {
+        for (j = m; j < r; j++) B[r + m - j] = A[j + 1];
+        {
+            for (int k = l; k <= r; k++)
+            {
+                if (B[j] < B[i])
+                {
+                    A[k] = B[j--];
+                }
+                else
+                {
+                    A[k] = B[i++];
+                }
+            }
+        }
+    }
 }
 
 void mergesort(int* A, int* B, int l, int r,int n)
@@ -43,12 +53,11 @@ void mergesort(int* A, int* B, int l, int r,int n)
 
 int startMergeSort(int* A, int l, int r,int n)
 {
-    TICK();
+
     int* B = new int[r - l + 1];
     mergesort(A,B,l,r,n);
     delete [] B;
-    TOCK();
-    cout<<"Time taken= "<<DURATION();
+
 }
 
 int radixSort(int s,int n)
@@ -92,8 +101,11 @@ int main()
 
 
     //Merge-sort
+    TICK();
     startMergeSort(A,0,n-1,n);
     delete[] A;
+    TOCK();
+    cout<<"Time taken= "<<DURATION();
 
     return 0;
 }
