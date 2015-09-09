@@ -8,6 +8,7 @@ using namespace std;
 int quickSort(int s,int n)
 {
 // fill in
+cout<<"aaaa";
 }
 
 void merge(int* A, int* B, int l, int m, int r)
