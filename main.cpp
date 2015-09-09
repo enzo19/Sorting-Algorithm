@@ -25,7 +25,7 @@ for (i = m + 1; i > l; i--) B[i - 1] = A[i - 1];
 void mergesort(int* A, int* B, int l, int r,int n)
 {
     if(l<r){
-        int m=(l+r)/2;
+        int m=(l+r)/2; //divide
         mergesort(A,B,l,m,n);
         mergesort(A,B,m+1,r,n);
         merge(A,B,l,m,r);
@@ -65,9 +65,7 @@ int main()
     int n;
     cin>>n;
     int *S=new int[n];
-    int *mergeArray=new int[n];
-    int *quickArray=new int[n];
-    int *radixArray=new int[n];
+    int *A=new int[n];
 
     cout<<"Before: ";
     //Initialize random array
@@ -84,9 +82,7 @@ int main()
     //copy array for reuse
     for(int i=0;i<n;i++)
     {
-        mergeArray[i]=S[i];
-        quickArray[i]=S[i];
-        radixArray[i]=S[i];
+        A[i]=S[i];
     }
 
     //Quick-sort
@@ -96,7 +92,8 @@ int main()
 
 
     //Merge-sort
-    startMergeSort(mergeArray,0,n-1,n);
+    startMergeSort(A,0,n-1,n);
+    delete[] A;
 
     return 0;
 }
