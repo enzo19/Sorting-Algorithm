@@ -20,7 +20,13 @@ int radixSort(int s,int n)
 
 int main()
 {
-    int n=10000;
+
+    cout<<"######################################################"<<endl;
+    cout<<"# Comparison of Quick-sort,Radix-sort and Merge-sort #"<<endl;
+    cout<<"######################################################"<<endl<<endl;
+    cout<<"Please input the size of array";
+    int n;
+    cin>>n;
     int S[n];
 
     cout<<"Original: \n";
