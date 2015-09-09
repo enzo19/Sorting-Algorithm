@@ -1,8 +1,10 @@
 # depslib dependency file v1.0
-1441733140 source:c:\users\enzo\desktop\sortingalgorithm\main.cpp
+1441803187 source:c:\users\enzo\desktop\sortingalgorithm\main.cpp
 	<iostream>
 	"timer.h"
 	<string>
+	<cstdlib>
+	<ctime>
 
 1436277122 c:\users\enzo\desktop\sortingalgorithm\timer.h
 	<iostream>
