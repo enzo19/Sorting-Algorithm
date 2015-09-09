@@ -29,13 +29,15 @@ void mergesort(int* A, int* B, int l, int r,int n)
         mergesort(A,B,l,m,n);
         mergesort(A,B,m+1,r,n);
         merge(A,B,l,m,r);
-
+        if(n<=100)//we only show results of short array
+        {
         cout<<"p="<<l<<", r="<<r<<", array=";
         for(int i=0;i<n;i++)
         {
             cout<<A[i]<<" ";
         }
         cout<<endl;
+        }
     }
 }
 
@@ -62,10 +64,10 @@ int main()
     cout<<"Please input the size of array: ";
     int n;
     cin>>n;
-    int S[n];
-    int mergeArray[n];
-    int quickArray[n];
-    int radixArray[n];
+    int *S=new int[n];
+    int *mergeArray=new int[n];
+    int *quickArray=new int[n];
+    int *radixArray=new int[n];
 
     cout<<"Before: ";
     //Initialize random array
@@ -73,7 +75,10 @@ int main()
     for(int i=0;i<n;i++)
     {
         S[i]=rand()%9999+0; //limit to 4 digit max? to be modified,maybe
-        cout<<S[i]<<" ";
+        if(n<=100)//we only show results of short array
+        {
+            cout<<S[i]<<" ";
+        }
     }
     cout<<endl;
     //copy array for reuse
