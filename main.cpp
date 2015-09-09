@@ -63,9 +63,7 @@ int startMergeSort(int* A, int l, int r,int n)
 
 int radixSort(int *A,int n)
 {
-    int max1=1,max2=1,max3=1,max4=1,max5=1,max6=1,max7=1,max8=1,max9=1;
-    cout<<max1<<" "<<max2<<" "<<max3<<" "<<max4<<" "<<max5<<" "<<max6<<" "<<max7<<" "<<max8<<" "<<max9<<" ";
-    int* one=new int[max1];
+
 
 }
 
