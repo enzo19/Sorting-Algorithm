@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <queue>
 using namespace std;
 
 int quickSort(int s,int n)
@@ -40,15 +41,15 @@ void mergesort(int* A, int* B, int l, int r,int n)
         mergesort(A,B,l,m,n);
         mergesort(A,B,m+1,r,n);
         merge(A,B,l,m,r);
-        if(n<=100)//we only show results of short array
-        {
-        cout<<"p="<<l<<", r="<<r<<", array=";
+        //if(n<=100)//we only show results of short array
+       // {
+        /*cout<<"p="<<l<<", r="<<r<<", array=";
         for(int i=0;i<n;i++)
         {
             cout<<A[i]<<" ";
         }
-        cout<<endl;
-        }
+        cout<<endl;*/
+       // }
     }
 }
 
@@ -61,10 +62,39 @@ int startMergeSort(int* A, int l, int r,int n)
 
 }
 
-int radixSort(int *A,int n)
+int radixSort(int* A,int n)
 {
+    queue<int> bucket[10];
+    int divide=1;
+    int mod=10;
+    for(int i=0;i<10;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            int temp=(A[j]/divide)%mod;
+            bucket[temp].push(A[j]);
+        }
+        for(int k=0,l=0;k<10;k++)
+        {
+            while(!bucket[k].empty())
+            {
+                A[l]=bucket[k].front();
+                l=l+1;
+                bucket[k].pop();
+            }
+        }
+        divide=divide*10;
+        //if(n<=100)//we only show results of short array
+        //{
 
-
+        //}
+    }
+    cout<<"array= ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<A[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int main()
@@ -95,20 +125,40 @@ int main()
     {
         A[i]=S[i];
     }
-
     //Quick-sort
 
 
     //Radix-sort
+    cout<<"Radix Sort: "<<endl;
+    for(int i=0;i<n;i++)
+    {
+         A[i]=S[i];
+    }
+    system("pause");
+    TICK();
     radixSort(A,n);
+    TOCK();
+    cout<<"Time taken= "<<DURATION()<<endl;
     system("pause");
 
+    for(int i=0;i<n;i++)
+    {
+        A[i]=S[i];
+    }
+    cout<<"Merge Sort: "<<endl;
+    //hvnt done
     //Merge-sort
     TICK();
     startMergeSort(A,0,n-1,n);
-    delete[] A;
     TOCK();
-    cout<<"Time taken= "<<DURATION();
+    cout<<endl<<"Sorted:";
+    for(int i=0;i<n;i++)
+    {
+         cout<<A[i]<<" ";
+    }
+    cout<<endl;
+    cout<<"Time taken= "<<DURATION()<<endl;
+    //delete[] A;
 
     return 0;
 }
