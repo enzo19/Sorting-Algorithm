@@ -9,7 +9,6 @@ using namespace std;
 int quickSort(int s,int n)
 {
 // fill in
-cout<<"aaaa";
 }
 
 void merge(int* A, int* B, int l, int m, int r)
@@ -51,6 +50,7 @@ void mergesort(int* A, int* B, int l, int r,int n)
         cout<<endl;*/
        // }
     }
+
 }
 
 int startMergeSort(int* A, int l, int r,int n)
@@ -86,12 +86,12 @@ int radixSort(int* A,int n,int largest)
         }
         divide=divide*10;
     }
-    /*cout<<"array= ";
+    cout<<"array= ";
     for(int i=0;i<n;i++)
     {
         cout<<A[i]<<" ";
     }
-    cout<<endl;*/
+    cout<<endl;
 }
 
 int main()
@@ -156,6 +156,11 @@ int main()
     cout<<"Merge Sort: "<<endl;
     TICK();
     startMergeSort(A,0,n-1,n);
+    for(int i=0;i<n;i++)
+        {
+            cout<<A[i]<<" ";
+        }
+        cout<<endl;
     TOCK();
     cout<<"Time taken= "<<DURATION()<<endl;
     //delete[] A;
