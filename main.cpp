@@ -62,13 +62,14 @@ int startMergeSort(int* A, int l, int r,int n)
 
 }
 
-int radixSort(int* A,int n)
+int radixSort(int* A,int n,int largest)
 {
     queue<int> bucket[10];
     int divide=1;
     int mod=10;
-    for(int i=0;i<10;i++)
+    for(int i=0;largest/divide>0;i++)
     {
+        //cout<<i<<endl;
         for(int j=0;j<n;j++)
         {
             int temp=(A[j]/divide)%mod;
@@ -84,17 +85,13 @@ int radixSort(int* A,int n)
             }
         }
         divide=divide*10;
-        //if(n<=100)//we only show results of short array
-        //{
-
-        //}
     }
-    cout<<"array= ";
+    /*cout<<"array= ";
     for(int i=0;i<n;i++)
     {
         cout<<A[i]<<" ";
     }
-    cout<<endl;
+    cout<<endl;*/
 }
 
 int main()
@@ -113,7 +110,7 @@ int main()
     srand(time(NULL));
     for(int i=0;i<n;i++)
     {
-        S[i]=rand()%9999+0; //limit to 4 digit max? to be modified,maybe
+        S[i]=rand(); //limit to 4 digit max? to be modified,maybe
         if(n<=100)//we only show results of short array
         {
             cout<<S[i]<<" ";
@@ -128,15 +125,23 @@ int main()
     //Quick-sort
 
 
+
     //Radix-sort
     cout<<"Radix Sort: "<<endl;
+    //copy array and get max value
+    int largest=S[0];
     for(int i=0;i<n;i++)
     {
          A[i]=S[i];
+         if(S[i]>largest)
+         {
+            largest=S[i];
+         }
     }
+
     system("pause");
     TICK();
-    radixSort(A,n);
+    radixSort(A,n,largest);
     TOCK();
     cout<<"Time taken= "<<DURATION()<<endl;
     system("pause");
@@ -145,18 +150,13 @@ int main()
     {
         A[i]=S[i];
     }
-    cout<<"Merge Sort: "<<endl;
+
     //hvnt done
     //Merge-sort
+    cout<<"Merge Sort: "<<endl;
     TICK();
     startMergeSort(A,0,n-1,n);
     TOCK();
-    cout<<endl<<"Sorted:";
-    for(int i=0;i<n;i++)
-    {
-         cout<<A[i]<<" ";
-    }
-    cout<<endl;
     cout<<"Time taken= "<<DURATION()<<endl;
     //delete[] A;
 
