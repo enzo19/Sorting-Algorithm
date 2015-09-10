@@ -6,10 +6,33 @@
 #include <queue>
 using namespace std;
 
-int quickSort(int s,int n)
+int partition(int* A,int p, int r)
 {
-// fill in
+    int i = p-1;
+    int j;
+    for(j = p; j<r ;j++)
+    {
+        if (A[j] <= A[r]){
+            i++;
+            swap(A[i], A[j]);
+        }
+    }
+
+    swap(A[i + 1], A[r]);
+return i + 1;
 }
+
+void quickSort(int* A, int p, int r)
+{
+    int pivot;
+    if (p < r)
+    {
+        pivot = partition(A, p, r);
+        quickSort(A, p, pivot -1);
+        quickSort(A, pivot+1, r);
+    }
+}
+
 
 void merge(int* A, int* B, int l, int m, int r)
 {
@@ -123,11 +146,21 @@ int main()
         A[i]=S[i];
     }
     //Quick-sort
+    system("pause");
+    cout<<"Quick Sort: "<<endl;
+    TICK();
+    quickSort(A, 0 ,n-1);
+    for(int i=0;i<n;i++)
+        {
+            cout<<A[i]<<" ";
+        }
+    cout<<endl;
+    TOCK();
+    cout<<"Time taken= "<<DURATION()<<endl;
 
 
 
     //Radix-sort
-    cout<<"Radix Sort: "<<endl;
     //copy array and get max value
     int largest=S[0];
     for(int i=0;i<n;i++)
@@ -140,6 +173,7 @@ int main()
     }
 
     system("pause");
+    cout<<"Radix Sort: "<<endl;
     TICK();
     radixSort(A,n,largest);
     TOCK();
@@ -164,6 +198,7 @@ int main()
     TOCK();
     cout<<"Time taken= "<<DURATION()<<endl;
     //delete[] A;
+
 
     return 0;
 }
