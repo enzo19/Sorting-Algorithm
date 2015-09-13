@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <queue>
+#include <math.h>
 using namespace std;
 
 int partition(int* A,int p, int r)
@@ -63,15 +64,15 @@ void mergesort(int* A, int* B, int l, int r,int n)
         mergesort(A,B,l,m,n);
         mergesort(A,B,m+1,r,n);
         merge(A,B,l,m,r);
-        //if(n<=100)//we only show results of short array
-       // {
-        /*cout<<"p="<<l<<", r="<<r<<", array=";
+        /*if(n<=100)//we only show results of short array
+        {
+        cout<<"p="<<l<<", r="<<r<<", array=";
         for(int i=0;i<n;i++)
         {
             cout<<A[i]<<" ";
         }
-        cout<<endl;*/
-       // }
+        cout<<endl;
+        }*/
     }
 
 }
@@ -84,6 +85,46 @@ int startMergeSort(int* A, int l, int r,int n)
     delete [] B;
 
 }
+
+void NewMerge(int *A,int *L,int leftCount,int *R,int rightCount) { //Alternative code
+	int i,j,k;
+
+	// i - to mark the index of left aubarray (L)
+	// j - to mark the index of right sub-raay (R)
+	// k - to mark the index of merged subarray (A)
+	i = 0; j = 0; k =0;
+
+	while(i<leftCount && j< rightCount) {
+		if(L[i]  < R[j]) A[k++] = L[i++];
+		else A[k++] = R[j++];
+	}
+	while(i < leftCount) A[k++] = L[i++];
+	while(j < rightCount) A[k++] = R[j++];
+}
+
+// Recursive function to sort an array of integers.
+void NewMergeSort(int *A,int n) {                                  //Alternative code
+	int mid,i, *L, *R;
+	if(n < 2) return; // base condition. If the array has less than two element, do nothing.
+
+	mid = n/2;  // find the mid index.
+
+	// create left and right subarrays
+	// mid elements (from index 0 till mid-1) should be part of left sub-array
+	// and (n-mid) elements (from mid to n-1) will be part of right sub-array
+	L = (int*)malloc(mid*sizeof(int));
+	R = (int*)malloc((n- mid)*sizeof(int));
+
+	for(i = 0;i<mid;i++) L[i] = A[i]; // creating left subarray
+	for(i = mid;i<n;i++) R[i-mid] = A[i]; // creating right subarray
+
+	NewMergeSort(L,mid);  // sorting the left subarray
+	NewMergeSort(R,n-mid);  // sorting the right subarray
+	NewMerge(A,L,mid,R,n-mid);  // Merging L and R into A as sorted list.
+        free(L);
+        free(R);
+}
+
 
 int radixSort(int* A,int n,int largest)
 {
@@ -122,9 +163,33 @@ int main()
     cout<<"######################################################"<<endl;
     cout<<"# Comparison of Quick-sort,Radix-sort and Merge-sort #"<<endl;
     cout<<"######################################################"<<endl<<endl;
-    cout<<"Please input the size of array: ";
-    int n;
-    cin>>n;
+    int choices;
+    int n = 0;
+    int a;
+    cout<<"Input Binary or Array?"<<endl;
+    cout<<"[ 1)Binary , 2)Array] : ";
+    cin>>choices;
+
+    switch (choices) {
+        case 1:
+            cout<<"Input Binary: ";
+            cin>>a;
+                for(int i=0; a > 0; i++) { //Convert binary to base 10
+                    if(a % 10 == 1) {
+                        n += pow(2, i);
+                        }
+                        a /= 10;
+                        }
+                        cout<<"Number of array: "<<n<<endl;
+                        break;
+
+        case 2:
+            cout<<"Input number of array: ";
+            cin>>n;
+            break;
+    }
+system ("pause");
+
     int *S=new int[n];
     int *A=new int[n];
 
@@ -189,7 +254,8 @@ int main()
     //Merge-sort
     cout<<"Merge Sort: "<<endl;
     TICK();
-    startMergeSort(A,0,n-1,n);
+    //startMergeSort(A,0,n-1,n);
+    NewMergeSort(A,n);
     for(int i=0;i<n;i++)
         {
             cout<<A[i]<<" ";
