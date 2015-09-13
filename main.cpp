@@ -25,18 +25,27 @@ int partition(int* A,int p, int r)
 return i + 1;
 }
 
-void quickSort(int* A, int p, int r)
+void quickSort(int* A, int p, int r, bool steps)
 {
     int pivot;
     if (p < r)
     {
         pivot = partition(A, p, r);
-        quickSort(A, p, pivot -1);
-        quickSort(A, pivot+1, r);
+        quickSort(A, p, pivot -1,steps);
+        quickSort(A, pivot+1, r,steps);
+
+        if(steps){
+        cout<<"array=";
+        for(int i=0;i<r+1;i++)
+        {
+            cout<<A[i]<<" ";
+        }
+        cout<<endl;
+        }
     }
 }
 
-int partition2(int* A,int p, int r)
+/*int partition2(int* A,int p, int r)
 {
     int i = p-1;
     int j;
@@ -62,116 +71,73 @@ void quickSort2(int* A, int p, int r)
         quickSort(A, pivot+1, r);
     }
 }
-
+*/
+//############################################################################
 
 
 void merge(int* A, int* B, int l, int m, int r)
 {
     int i, j;
-    for (i = m + 1; i > l; i--) B[i - 1] = A[i - 1];
-    {
-        for (j = m; j < r; j++) B[r + m - j] = A[j + 1];
-        {
-            for (int k = l; k <= r; k++)
-            {
-                if (B[j] < B[i])
-                {
-                    A[k] = B[j--];
-                }
-                else
-                {
-                    A[k] = B[i++];
-                }
-            }
-        }
-    }
+    for (i = m + 1; i > l; i--)
+
+        B[i - 1] = A[i - 1];
+
+    for (j = m; j < r; j++)
+
+        B[r + m - j] = A[j + 1];
+
+    for (int k = l; k <= r; k++)
+        if (B[j] < B[i])
+
+            A[k] = B[j--];
+
+        else
+
+            A[k] = B[i++];
 }
 
-void mergesort(int* A, int* B, int l, int r,int n)
+void mergesort(int* A, int* B, int l, int r,int n,bool steps)
 {
     if(l<r){
         int m=(l+r)/2; //divide
-        mergesort(A,B,l,m,n);
-        mergesort(A,B,m+1,r,n);
+        mergesort(A,B,l,m,n,steps);
+        mergesort(A,B,m+1,r,n,steps);
         merge(A,B,l,m,r);
-        /*if(n<=100)//we only show results of short array
-        {
+
+        if(steps){
         cout<<"p="<<l<<", r="<<r<<", array=";
         for(int i=0;i<n;i++)
         {
             cout<<A[i]<<" ";
         }
         cout<<endl;
-        }*/
+        }
     }
 
 }
 
-int startMergeSort(int* A, int l, int r,int n)
+int startMergeSort(int* A, int l, int r,int n,bool steps)
 {
     int* B = new int[r - l + 1];
-    mergesort(A,B,l,r,n);
+    mergesort(A,B,l,r,n,steps);
     delete [] B;
 }
+//############################################################################
 
-
-void NewMerge(int *A,int *L,int leftCount,int *R,int rightCount) { //Alternative code
-	int i,j,k;
-
-	// i - to mark the index of left aubarray (L)
-	// j - to mark the index of right sub-raay (R)
-	// k - to mark the index of merged subarray (A)
-	i = 0; j = 0; k =0;
-
-	while(i<leftCount && j< rightCount) {
-		if(L[i]  < R[j]) A[k++] = L[i++];
-		else A[k++] = R[j++];
-	}
-	while(i < leftCount) A[k++] = L[i++];
-	while(j < rightCount) A[k++] = R[j++];
-}
-
-// Recursive function to sort an array of integers.
-void NewMergeSort(int *A,int n) {                                  //Alternative code
-	int mid,i, *L, *R;
-	if(n < 2) return; // base condition. If the array has less than two element, do nothing.
-
-	mid = n/2;  // find the mid index.
-
-	// create left and right subarrays
-	// mid elements (from index 0 till mid-1) should be part of left sub-array
-	// and (n-mid) elements (from mid to n-1) will be part of right sub-array
-	L = (int*)malloc(mid*sizeof(int));
-	R = (int*)malloc((n- mid)*sizeof(int));
-
-	for(i = 0;i<mid;i++) L[i] = A[i]; // creating left subarray
-	for(i = mid;i<n;i++) R[i-mid] = A[i]; // creating right subarray
-
-	NewMergeSort(L,mid);  // sorting the left subarray
-	NewMergeSort(R,n-mid);  // sorting the right subarray
-	NewMerge(A,L,mid,R,n-mid);  // Merging L and R into A as sorted list.
-        free(L);
-        free(R);
-}
-
-
-
-
-int radixSort(int* A,int n,int largest)
+int radixSort(int* A,int n,int largest,bool steps)
 {
-    //int divide=1;
+    int divide=1;
     int mod=10;
     int temp;
 
-    int exp=1;
-    for (int i=0; i<= largest > 0;i++ )
+    for (int i=0; i< largest > 0;i++ )
     {
         int* output=new int[n];
         int count[10] = {0};
         int temp;
         for (int i = 0; i < n; i++)
         {
-            temp=(A[i]/exp)%10;
+            temp=(A[i]/divide)%mod;
             count[temp]=count[temp]+1;
         }
 
@@ -182,7 +148,7 @@ int radixSort(int* A,int n,int largest)
 
         for (int i = n - 1; i >= 0; i--)
         {
-            temp=(A[i]/exp)%10;
+            temp=(A[i]/divide)%mod;
             output[count[temp]-1] = A[i];
             count[temp]--;
         }
@@ -190,8 +156,20 @@ int radixSort(int* A,int n,int largest)
         for (int i = 0; i < n; i++)
         {
            A[i] = output[i];
+           /*if(steps)
+            {
+                cout<<A[i]<<" ";
+            }*/
         }
-        exp =exp* 10;
+        divide =divide* mod;
+        if(steps){
+        cout<<"array=";
+        for(int i=0;i<n;i++)
+        {
+            cout<<A[i]<<" ";
+        }
+        cout<<endl;
+        }
     }
 
 
@@ -252,15 +230,26 @@ int radixSort(int* A,int n,int largest)
 
 int main()
 {
-    cout<<"######################################################"<<endl;
-    cout<<"# Comparison of Quick-sort,Radix-sort and Merge-sort #"<<endl;
-    cout<<"######################################################"<<endl<<endl;
+    cout<<"#######################################################################"<<endl;
+    cout<<"#          Comparison of Quick-sort,Radix-sort and Merge-sort         #"<<endl;
+    cout<<"#######################################################################"<<endl<<endl;
 
+    bool showSteps=false;
     int n;
+    char selectSteps;
     cout<<"Please input number of array: ";
     cin>>n;
+    cout<<"Do you want to show steps of algorithm?(y/n) ";
+    cin>>selectSteps;
+    if(selectSteps=='y')
+    {
+        showSteps=true;
+    }
+    else
+    {
+        showSteps=false;
+    }
     cout<<endl;
-
     int *S=new int[n];
     int *A=new int[n];
 
@@ -269,26 +258,23 @@ int main()
     srand(time(NULL));
     for(int i=0;i<n;i++)
     {
-        S[i]=rand(); //limit to 4 digit max? to be modified,maybe
-        if(n<=100)//we only show results of short array
+        S[i]=rand();
+        if(n<=100)
         {
             cout<<S[i]<<" ";
         }
     }
     cout<<endl<<endl;
-
-    //copy array for reuse
+    //############################################################################
+    //Quick-sort
     for(int i=0;i<n;i++)
     {
         A[i]=S[i];
     }
-
-
-    //Quick-sort
     system("pause");
     cout<<"Quick Sort: "<<endl;
     TICK();
-    quickSort(A, 0 ,n-1);
+    quickSort(A, 0 ,n-1,showSteps);
     TOCK();
     for(int i=0;i<n;i++)
         {
@@ -296,6 +282,8 @@ int main()
         }
     cout<<"Time taken= "<<DURATION()<<endl<<endl;
 
+
+    //############################################################################
     //Radix-sort
     //copy array and get max value
     int largest=S[0];
@@ -316,12 +304,13 @@ int main()
     system("pause");
     cout<<"Radix Sort: "<<endl;
     TICK();
-    radixSort(A,n,digits);
+    radixSort(A,n,digits,showSteps);
     TOCK();
     cout<<"Time taken= "<<DURATION()<<endl<<endl;
     system("pause");
 
 
+    //############################################################################
     //Merge-sort
     for(int i=0;i<n;i++)
     {
@@ -331,9 +320,9 @@ int main()
     TICK();
 
     //startMergeSort(A,0,n-1,n);
-    NewMergeSort(A,n);
+    //NewMergeSort(A,n);
 
-    startMergeSort(A,0,n-1,n);
+    startMergeSort(A,0,n-1,n,showSteps);
     TOCK();
 
     for(int i=0;i<n;i++)
@@ -345,6 +334,7 @@ int main()
     cout<<"Time taken= "<<DURATION()<<endl;
     //delete[] A;
 
+    //############################################################################
 
     return 0;
 }
