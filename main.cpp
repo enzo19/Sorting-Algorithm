@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <queue>
+#include <vector>
 using namespace std;
 
 int partition(int* A,int p, int r)
@@ -78,24 +79,90 @@ void mergesort(int* A, int* B, int l, int r,int n)
 
 int startMergeSort(int* A, int l, int r,int n)
 {
-
     int* B = new int[r - l + 1];
     mergesort(A,B,l,r,n);
     delete [] B;
-
 }
+
 
 int radixSort(int* A,int n,int largest)
 {
-    queue<int> bucket[10];
-    int divide=1;
+
+    //int divide=1;
     int mod=10;
-    for(int i=0;largest/divide>0;i++)
+    int temp;
+
+    int exp=1;
+    for (int i=0; i<= largest > 0;i++ )
+    {
+        int* output=new int[n];
+        int count[10] = {0};
+        int temp;
+        for (int i = 0; i < n; i++)
+        {
+            temp=(A[i]/exp)%10;
+            count[temp]=count[temp]+1;
+        }
+
+        for (int i = 1; i < 10; i++)
+        {
+            count[i] =count[i]+count[i - 1];
+        }
+
+        for (int i = n - 1; i >= 0; i--)
+        {
+            temp=(A[i]/exp)%10;
+            output[count[temp]-1] = A[i];
+            count[temp]--;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+           A[i] = output[i];
+        }
+        exp =exp* 10;
+    }
+
+    //code 01
+    /*int *W=new int[n];
+    int *Z=new int[n];
+
+    for (int i = 0; i <= largest; i++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            W[i]=(A[i]/divide)%10;
+        }
+        int c=0;
+
+        for(int j=0;j<10;j++)
+        {
+            for(int i=0;i<n;i++)
+            {
+                if(W[i]==j)
+                {
+                    Z[c]=A[i];
+                    c=c+1;
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            //A[i]=Z[i];
+        }
+        divide=divide*mod;
+    }*/
+
+
+    //code 02
+    /*queue<int> bucket[10];
+    for(int i=0;i<=largest;i++)
     {
         //cout<<i<<endl;
         for(int j=0;j<n;j++)
         {
-            int temp=(A[j]/divide)%mod;
+            temp=(A[j]/divide)%mod;
             bucket[temp].push(A[j]);
         }
         for(int k=0,l=0;k<10;k++)
@@ -108,13 +175,9 @@ int radixSort(int* A,int n,int largest)
             }
         }
         divide=divide*10;
-    }
-    cout<<"array= ";
-    for(int i=0;i<n;i++)
-    {
-        cout<<A[i]<<" ";
-    }
-    cout<<endl;
+    }*/
+
+
 }
 
 int main()
@@ -150,15 +213,14 @@ int main()
     cout<<"Quick Sort: "<<endl;
     TICK();
     quickSort(A, 0 ,n-1);
+    TOCK();
     for(int i=0;i<n;i++)
         {
-            cout<<A[i]<<" ";
+            //cout<<A[i]<<" ";
         }
     cout<<endl;
-    TOCK();
+
     cout<<"Time taken= "<<DURATION()<<endl;
-
-
 
     //Radix-sort
     //copy array and get max value
@@ -172,11 +234,25 @@ int main()
          }
     }
 
+    int digits;
+    int divide=1;
+    for(digits=0;largest/divide>0;digits++)
+    {
+         divide=divide*10;
+    }
+
     system("pause");
     cout<<"Radix Sort: "<<endl;
     TICK();
-    radixSort(A,n,largest);
+    radixSort(A,n,digits);
     TOCK();
+    //cout<<"array= ";
+    for(int i=0;i<n;i++)
+    {
+        //cout<<A[i]<<" ";
+    }
+    cout<<endl;
+
     cout<<"Time taken= "<<DURATION()<<endl;
     system("pause");
 
@@ -190,12 +266,13 @@ int main()
     cout<<"Merge Sort: "<<endl;
     TICK();
     startMergeSort(A,0,n-1,n);
+    TOCK();
     for(int i=0;i<n;i++)
         {
-            cout<<A[i]<<" ";
+            //cout<<A[i]<<" ";
         }
         cout<<endl;
-    TOCK();
+
     cout<<"Time taken= "<<DURATION()<<endl;
     //delete[] A;
 
