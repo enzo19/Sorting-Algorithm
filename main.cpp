@@ -200,12 +200,15 @@ int main()
             cout<<S[i]<<" ";
         }
     }
-    cout<<endl;
+    cout<<endl<<endl;
+
     //copy array for reuse
     for(int i=0;i<n;i++)
     {
         A[i]=S[i];
     }
+
+
     //Quick-sort
     system("pause");
     cout<<"Quick Sort: "<<endl;
@@ -216,9 +219,7 @@ int main()
         {
             //cout<<A[i]<<" ";
         }
-    cout<<endl;
-
-    cout<<"Time taken= "<<DURATION()<<endl;
+    cout<<"Time taken= "<<DURATION()<<endl<<endl;
 
     //Radix-sort
     //copy array and get max value
@@ -231,37 +232,27 @@ int main()
             largest=S[i];
          }
     }
-
     int digits;
     int divide=1;
     for(digits=0;largest/divide>0;digits++)
     {
          divide=divide*10;
     }
-
     system("pause");
     cout<<"Radix Sort: "<<endl;
     TICK();
     radixSort(A,n,digits);
     TOCK();
-    //cout<<"array= ";
-    for(int i=0;i<n;i++)
-    {
-        //cout<<A[i]<<" ";
-    }
-    cout<<endl;
-
-    cout<<"Time taken= "<<DURATION()<<endl;
+    cout<<"Time taken= "<<DURATION()<<endl<<endl;
     system("pause");
 
+
+    //Merge-sort
     for(int i=0;i<n;i++)
     {
         A[i]=S[i];
     }
-
-    //hvnt done
-    //Merge-sort
-    cout<<"Merge Sort: "<<endl;
+    cout<<"Merge Sort: ";
     TICK();
     startMergeSort(A,0,n-1,n);
     TOCK();
