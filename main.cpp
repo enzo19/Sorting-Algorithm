@@ -36,6 +36,34 @@ void quickSort(int* A, int p, int r)
     }
 }
 
+int partition2(int* A,int p, int r)
+{
+    int i = p-1;
+    int j;
+    for(j = p; j>r ;j++)
+    {
+        if (A[j] <= A[r]){
+            i++;
+            swap(A[i], A[j]);
+        }
+    }
+
+    swap(A[i + 1], A[r]);
+return i + 1;
+}
+
+void quickSort2(int* A, int p, int r)
+{
+    int pivot;
+    if (p < r)
+    {
+        pivot = partition2(A, p, r);
+        quickSort(A, p, pivot -1);
+        quickSort(A, pivot+1, r);
+    }
+}
+
+
 
 void merge(int* A, int* B, int l, int m, int r)
 {
@@ -227,32 +255,11 @@ int main()
     cout<<"######################################################"<<endl;
     cout<<"# Comparison of Quick-sort,Radix-sort and Merge-sort #"<<endl;
     cout<<"######################################################"<<endl<<endl;
-    int choices;
-    int n = 0;
-    int a;
-    cout<<"Input Binary or Array?"<<endl;
-    cout<<"[ 1)Binary , 2)Array] : ";
-    cin>>choices;
 
-    switch (choices) {
-        case 1:
-            cout<<"Input Binary: ";
-            cin>>a;
-                for(int i=0; a > 0; i++) { //Convert binary to base 10
-                    if(a % 10 == 1) {
-                        n += pow(2, i);
-                        }
-                        a /= 10;
-                        }
-                        cout<<"Number of array: "<<n<<endl;
-                        break;
-
-        case 2:
-            cout<<"Input number of array: ";
-            cin>>n;
-            break;
-    }
-system ("pause");
+    int n;
+    cout<<"Please input number of array: ";
+    cin>>n;
+    cout<<endl;
 
     int *S=new int[n];
     int *A=new int[n];

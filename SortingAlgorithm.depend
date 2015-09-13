@@ -15,7 +15,7 @@
 	<iostream>
 	<iomanip>
 
-1442163638 source:c:\users\rey ng\desktop\algo\sorting-algorithm\main.cpp
+1442168625 source:c:\users\rey ng\desktop\algo\sorting-algorithm\main.cpp
 	<iostream>
 	"timer.h"
 	<string>
@@ -23,6 +23,7 @@
 	<ctime>
 	<queue>
 	<math.h>
+	<vector>
 
 1441891631 c:\users\rey ng\desktop\algo\sorting-algorithm\timer.h
 	<iostream>
