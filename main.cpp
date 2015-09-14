@@ -23,7 +23,7 @@ int partition(int* A,int p, int r, bool steps, int n)
 
     swap(A[i + 1], A[r]);   //swap the pivot to i+1, which is right side of the partition wall
     if(steps){
-        cout<<"array=";
+        cout<<"p="<<p<<", r="<<r<<", array=";
         for(int i=0;i<n;i++)  //display each steps of swap in partitioning, left smaller than pivot, right larger than pivot
         {
             cout<<A[i]<<" ";
@@ -43,8 +43,10 @@ void quickSort(int* A, int p, int r, bool steps, int n)
         pivot = partition(A, p, r, steps, n); //state pivot in partition function
         quickSort(A, p, pivot -1,steps, n); //recursive function call for index left side of pivot
         quickSort(A, pivot+1, r,steps, n);  //recursive function call for index right side of pivot
+        //if(steps){
+        //cout<<"array=";
         if(steps){
-        cout<<"array=";
+            cout<<"p="<<p<<", r="<<r<<", array="; //display current p and r index
         for(int i=0;i<n;i++)    //display each steps of swap in quick sort in ascending order, left smaller than pivot, right larger than pivot
         {
             cout<<A[i]<<" ";
@@ -57,31 +59,32 @@ void quickSort(int* A, int p, int r, bool steps, int n)
 }
 
 
+
 //############################################################################
 
-void mergesort(int* A, int* B, int l, int r,int n,bool steps)
+void mergesort(int* A, int* B, int p, int r,int n,bool steps)
 {
-    if(l<r){
-        int m=(l+r)/2; //divide the array,m is the middle
-        mergesort(A,B,l,m,n,steps); //call recursively from first to middle
+    if(p<r){
+        int m=(p+r)/2; //divide the array,m is the middle
+        mergesort(A,B,p,m,n,steps); //call recursively from first to middle
         mergesort(A,B,m+1,r,n,steps);//call recursively from middle to last
         int i, j;
-        for (i = m + 1; i > l; i--)
-            B[i - 1] = A[i - 1];
-                for (j = m; j < r; j++)
-                    B[r + m - j] = A[j + 1];
-                        for (int k = l; k <= r; k++)
-                            if (B[j] < B[i])
-                                A[k] = B[j--];
-                                else
-                                A[k] = B[i++];
-
+        for (i = m + 1; i > p; i--)
+            B[i - 1] = A[i - 1];    //
+        for (j = m; j < r; j++)
+            B[r + m - j] = A[j + 1];
+        for (int k = p; k <= r; k++){
+            if (B[j] < B[i])
+                A[k] = B[j--];
+            else
+                A[k] = B[i++];
+        }
 
         if(steps){
-        cout<<"p="<<l<<", r="<<r<<", array=";
+            cout<<"p="<<p<<", r="<<r<<", array="; //display current p and r index
         for(int i=0;i<n;i++)
         {
-            cout<<A[i]<<" ";
+            cout<<A[i]<<" "; //display each steps of merges sort
         }
         cout<<endl;
         }
@@ -90,10 +93,10 @@ void mergesort(int* A, int* B, int l, int r,int n,bool steps)
 
 }
 
-int startMergeSort(int* A, int l, int r,int n,bool steps)
+int startMergeSort(int* A, int p, int r,int n,bool steps)
 {
-    int* B = new int[r - l + 1];
-    mergesort(A,B,l,r,n,steps);
+    int* B = new int[n];
+    mergesort(A,B,p,r,n,steps);
     delete [] B;
 }
 //############################################################################
@@ -224,19 +227,18 @@ int main()
     cout<<endl;
     int *S=new int[n];
     int *A=new int[n];
-
+    double quickTime,radixTime,mergeTime;
     cout<<"Before: ";
     //Initialize random array
     srand(time(NULL));
     for(int i=0;i<n;i++)
     {
         S[i]=rand();
-        if(n<=100)
-        {
-            cout<<S[i]<<" ";
-        }
+        if(n<1000){
+        cout<<S[i]<<" ";}
     }
     cout<<endl<<endl;
+
     //############################################################################
     //Quick-sort
     for(int i=0;i<n;i++)
@@ -248,12 +250,23 @@ int main()
     TICK();
     quickSort(A, 0 ,n-1,showSteps, n);
     TOCK();
+    quickTime=DURATION();
+    cout<<"Result= ";
     for(int i=0;i<n;i++)
-        {
-            //cout<<A[i]<<" ";
-        }
-    cout<<"Time taken= "<<DURATION()<<endl<<endl;
+    {
+        if(n<1000){
+            cout<<A[i]<<" ";}
+    }
+    cout<<endl;
+    if(quickTime<0.001)
+    {
+        cout<<"Time taken= "<<quickTime*1000<<" milliseconds"<<endl<<endl;
+    }
+    else
+    {
+        cout<<"Time taken= "<<quickTime<<" seconds"<<endl<<endl;
 
+    }
 
     //############################################################################
     //Radix-sort
@@ -278,7 +291,24 @@ int main()
     TICK();
     radixSort(A,n,digits,showSteps);
     TOCK();
-    cout<<"Time taken= "<<DURATION()<<endl<<endl;
+    radixTime=DURATION();
+    cout<<"Result= ";
+    for(int i=0;i<n;i++)
+    {
+         if(n<1000){
+            cout<<A[i]<<" ";}
+    }
+    cout<<endl;
+
+    if(radixTime<0.001)
+    {
+        cout<<"Time taken= "<<radixTime*1000<<" milliseconds"<<endl<<endl;
+    }
+    else
+    {
+        cout<<"Time taken= "<<radixTime<<" seconds"<<endl<<endl;
+
+    }
     system("pause");
 
 
@@ -296,17 +326,36 @@ int main()
 
     startMergeSort(A,0,n-1,n,showSteps);
     TOCK();
-
+    mergeTime=DURATION();
+    cout<<"Result= ";
     for(int i=0;i<n;i++)
-        {
-            //cout<<A[i]<<" ";
-        }
-        cout<<endl;
+    {
+        if(n<1000){
+            cout<<A[i]<<" ";}
+    }
+    cout<<endl;
 
-    cout<<"Time taken= "<<DURATION()<<endl;
-    //delete[] A;
+    if(mergeTime<0.001)
+    {
+        cout<<"Time taken= "<<mergeTime*1000<<" milliseconds"<<endl<<endl;
+    }
+    else
+    {
+        cout<<"Time taken= "<<mergeTime<<" seconds"<<endl<<endl;
 
+    }
     //############################################################################
-
+    if((quickTime<radixTime)&&(quickTime<mergeTime))
+    {
+        cout<<"QuickSort is the fastest in this experiment"<<endl;
+    }
+    else if((radixTime<quickTime)&&(radixTime<mergeTime))
+    {
+        cout<<"RadixSort is the fastest in this experiment"<<endl;
+    }
+    else if((mergeTime<quickTime)&&(mergeTime<radixTime))
+    {
+        cout<<"MergeSort is the fastest in this experiment"<<endl;
+    }
     return 0;
 }
