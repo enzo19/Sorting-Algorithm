@@ -70,15 +70,29 @@ void mergesort(int* A, int* B, int p, int r,int n,bool steps)
         mergesort(A,B,m+1,r,n,steps);//call recursively from middle to last
         int i, j;
         for (i = m + 1; i > p; i--)
-            B[i - 1] = A[i - 1];    //
+            {
+                B[i - 1] = A[i - 1]; //copy the value from first sorted partition
+                //e.g B[2]=A[2], B[1]=A[1], B[0]=A[0]
+                //e.g i=0 ,use this value for next step
+            }
+
         for (j = m; j < r; j++)
-            B[r + m - j] = A[j + 1];
-        for (int k = p; k <= r; k++){
-            if (B[j] < B[i])
-                A[k] = B[j--];
-            else
-                A[k] = B[i++];
-        }
+            {
+                B[r + m - j] = A[j + 1]; //copy the value of second sorted partition
+                //descending it so ,because we compare smallest from each partition ,e.g B[4]=3 ,B[3]=4
+                //e.g j=4 ,use this value for next step
+            }
+        for (int k = p; k <= r; k++)
+            {
+                if (B[j] < B[i])    //compare B[j]to B[i](first of different partition), if B[j]less than B[i]
+                    {
+                        A[k] = B[j--];  //A[k]=B[j],then minus value of j
+                    }
+                else
+                    {
+                        A[k] = B[i++]; //A[k]=B[j],then increase value of i
+                    }
+            }
 
         if(steps){
             cout<<"p="<<p<<", r="<<r<<", array="; //display current p and r index
